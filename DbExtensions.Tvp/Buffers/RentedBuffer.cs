@@ -14,11 +14,6 @@ namespace DbExtensions.Tvp.Buffers
             private init;
         }
 
-        public UnsafeResizeScope EnterToUnsafeResizeScope(int length)
-        {
-            return new UnsafeResizeScope(Segment.Array as object[], length);
-        }
-
         /// <inheritdoc/>       
         public void Dispose()
         {
