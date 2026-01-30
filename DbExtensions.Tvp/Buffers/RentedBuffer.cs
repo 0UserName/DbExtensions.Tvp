@@ -14,6 +14,11 @@ namespace DbExtensions.Tvp.Buffers
             private init;
         }
 
+        public T this[int index]
+        {
+            set => Segment.Array[index] = value;
+        }
+
         /// <inheritdoc/>       
         public void Dispose()
         {
@@ -23,11 +28,6 @@ namespace DbExtensions.Tvp.Buffers
         public RentedBuffer(int length)
         {
             Segment = new ArraySegment<T>(ArrayPool<T>.Shared.Rent(length), 0, length);
-        }
-
-        public RentedBuffer(T obj) : this(1)
-        {
-            Segment.Array[0] = obj;
         }
     }
 }
