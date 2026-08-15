@@ -1,0 +1,22 @@
+[
+  {
+    "Property0": 0,
+    "Property1": 2,
+    "Property2": 4,
+    "Property3": 6,
+    "Property4": "Value1",
+    "Property5": "Value3",
+    "Property6": "Value5",
+    "Property7": "Value7"
+  },
+  {
+    "Property0": null,
+    "Property1": null,
+    "Property2": 5,
+    "Property3": 6,
+    "Property4": "Value2",
+    "Property5": "Value4",
+    "Property6": "Value6",
+    "Property7": "Value8"
+  }
+]
