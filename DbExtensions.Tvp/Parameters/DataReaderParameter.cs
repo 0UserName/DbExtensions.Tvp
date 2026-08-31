@@ -24,10 +24,7 @@ namespace DbExtensions.Tvp.Parameters
         /// that need to know the structure
         /// of user data.
         /// </remarks>
-        private static readonly
-            DataTable _schema = new DataTableReader(new
-            DataTable
-            (TRow.Metadata.Name).InitColumns<TRow>()).GetSchemaTable();
+        private static readonly DataTable _schema = new DataTableReader(new DataTable(TRow.Metadata.Name).InitColumns<TRow>()).GetSchemaTable();
 
         private int _count;
 
