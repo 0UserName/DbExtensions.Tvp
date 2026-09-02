@@ -18,7 +18,7 @@ namespace DbExtensions.Tvp.Tests
         [TestCase(nameof(InternalMetadataTableValued.Property1), typeof(int), TestName = $"DbDataReader: { nameof(InternalMetadataTableValued.Property1) } is of type { nameof(Int32) }", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
         public void TestDataReaderNullableType<TRow>(string column, Type type) where TRow : ITableValued
         {
-            That<Type, TRow, DbDataReader>((_, p) => p.GetSchemaTable().Rows.Cast<DataRow>().First(r => r.Field<string>(SchemaTableColumn.ColumnName) == column).Field<Type>(SchemaTableColumn.DataType), Is.EqualTo(type));
+            That<Type, TRow, DbDataReader>((_, p) => p.GetSchemaTable().AsEnumerable().First(r => r.Field<string>(SchemaTableColumn.ColumnName) == column).Field<Type>(SchemaTableColumn.DataType), Is.EqualTo(type));
         }
 
         [TestCase(nameof(InternalMetadataTableValued.Property0), typeof(int), TestName = $"DataTable: { nameof(InternalMetadataTableValued.Property0) } is of type { nameof(Int32) }", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]

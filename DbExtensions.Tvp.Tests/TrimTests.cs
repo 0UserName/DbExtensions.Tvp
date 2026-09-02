@@ -17,7 +17,7 @@ namespace DbExtensions.Tvp.Tests
         [TestCase(nameof(ExternalMetadataTableValued.Property7), TestName = $"DbDataReader: { nameof(ExternalMetadataTableValued.Property7) } is ignored", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
         public void TestDataReaderTrimColumn<TRow>(string column) where TRow : ITableValued
         {
-            That<bool, TRow, DbDataReader>((_, p) => p.GetSchemaTable().Rows.Cast<DataRow>().Any(r => r.Field<string>(SchemaTableColumn.ColumnName) == column), Is.False);
+            That<bool, TRow, DbDataReader>((_, p) => p.GetSchemaTable().AsEnumerable().Any(r => r.Field<string>(SchemaTableColumn.ColumnName) == column), Is.False);
         }
 
         [TestCase(nameof(ExternalMetadataTableValued.Property6), TestName = $"DataTable: { nameof(ExternalMetadataTableValued.Property6) } is ignored", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]

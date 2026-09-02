@@ -25,7 +25,7 @@ namespace DbExtensions.Tvp.Tests
         [TestCase(5, nameof(ExternalMetadataTableValued.Property0), TestName = $"DbDataReader: { nameof(ExternalMetadataTableValued.Property0) } is defined in the external metadata at ordinal [5]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
         public void TestDataReaderOrdinal<TRow>(int ordinal, string column) where TRow : ITableValued
         {
-            That<string, TRow, DbDataReader>((_, p) => p.GetSchemaTable().Rows.Cast<DataRow>().First(r => r.Field<int>(SchemaTableColumn.ColumnOrdinal) == ordinal).Field<string>(SchemaTableColumn.ColumnName), Is.EqualTo(column));
+            That<string, TRow, DbDataReader>((_, p) => p.GetSchemaTable().AsEnumerable().First(r => r.Field<int>(SchemaTableColumn.ColumnOrdinal) == ordinal).Field<string>(SchemaTableColumn.ColumnName), Is.EqualTo(column));
         }
 
         [TestCase(0, nameof(InternalMetadataTableValued.Property0), TestName = $"DataTable: { nameof(InternalMetadataTableValued.Property0) } is defined in the class layout at ordinal [0]", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
