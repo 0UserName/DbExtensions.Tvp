@@ -14,9 +14,10 @@ namespace DbExtensions.Tvp.Tests
     public sealed class GetterTests : AbstractTests
     {
         /// <remarks>
-        /// It's enough to check calls of IsDbNull, GetValue, and GetFieldValue to
-        /// verify TVP build correctness. Other methods like GetInt or GetLong use
-        /// these internally.
+        /// It is enough to check calls of IsDbNull, GetValue,
+        /// and GetFieldValue to verify TVP build correctness.
+        /// Other methods like GetInt or
+        /// GetLong use these internally.
         /// </remarks>
         private static string Materialize(DbDataReader reader)
         {
