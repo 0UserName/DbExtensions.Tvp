@@ -1,9 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<IsPackable>false</IsPackable>
-  </PropertyGroup>
-
   <ItemGroup>
 	<!-- Integration of test framework adapters with test environment (Visual Studio, dotnet CLI) -->
 	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
