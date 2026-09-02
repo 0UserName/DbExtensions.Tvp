@@ -6,7 +6,7 @@
 
 <div align="justify">
 
-The library simplifies creating table-valued parameters that can be consumed by both `SQL Server` and `PostgreSQL` (via the [Npgsql.Tvp](https://github.com/0UserName/npgsql.tvp) plugin).
+The library simplifies creating table-valued parameters that can be consumed by `SQL Server` and `PostgreSQL` (via the [Npgsql.Tvp](https://github.com/0UserName/npgsql.tvp) plugin).
 
 </div>
 
@@ -166,3 +166,9 @@ The plugin optimizes internal buffer usage during remote calls by classifying pa
 
 > [!WARNING]
 > For `DbDataReader`-based parameters, the `RecordsAffected` property specifies the total row count instead of rows affected by DML operations.
+
+
+
+# References
+
+- [Table-Valued Parameters - ADO.NET](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/sql/table-valued-parameters)
