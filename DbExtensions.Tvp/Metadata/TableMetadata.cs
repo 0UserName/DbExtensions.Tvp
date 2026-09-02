@@ -2,18 +2,6 @@
 
 namespace DbExtensions.Tvp.Metadata
 {
-    internal sealed class TableMetadata(string name, IColumnInternalMetadata[] columns) : ITableMetadata
-    {
-        /// <inheritdoc/>
-        public string Name
-        {
-            get => name;
-        }
-
-        /// <inheritdoc/>
-        public IColumnInternalMetadata[] Columns
-        {
-            get => columns;
-        }
-    }
+    internal sealed record class TableMetadata(string Name, IColumnInternalMetadata[] Columns) : ITableMetadata
+    { }
 }
