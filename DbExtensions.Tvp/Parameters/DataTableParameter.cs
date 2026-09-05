@@ -17,14 +17,10 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public void Load(IEnumerable<TRow> rows)
         {
-            BeginLoadData();
-
             foreach (TRow row in rows)
             {
                 Rows.Add(DataRowBinder<TRow>.Get()(row, NewRow()));
             }
-
-            EndLoadData();
         }
 
         /// <inheritdoc/>
