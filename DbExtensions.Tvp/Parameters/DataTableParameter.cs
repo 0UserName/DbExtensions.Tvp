@@ -17,9 +17,11 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public void Load(IEnumerable<TRow> rows)
         {
+            object[] buffer = new object[TRow.Metadata.Columns.Length];
+
             foreach (TRow row in rows)
             {
-                Rows.Add(DataRowBinder<TRow>.Get()(row, NewRow()));
+                DataRowBinder<TRow>.Get()(this, row, buffer);
             }
         }
 

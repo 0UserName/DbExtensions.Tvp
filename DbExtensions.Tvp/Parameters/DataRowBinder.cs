@@ -6,77 +6,50 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 
-using System.Reflection;
-
 namespace DbExtensions.Tvp.Parameters
 {
     internal static class DataRowBinder<TRow> where TRow : ITableValued
     {
-        private static readonly MethodInfo _setField = typeof(DataRowExtensions).GetMethods().First(m => m.Name == nameof(DataRowExtensions.SetField));
+        private static readonly Action<DataTable, TRow, object[]> _binder = Factory();
 
-        private static readonly Func<TRow, DataRow, DataRow> _binder = Create();
-
-        /// <summary>
+        /// <remarks>
+        /// <code>
+        /// $buffer[0] = .Call $row.GetValue(0);
+        /// $buffer[1] = .Call $row.GetValue(1);
+        /// $buffer[2] = .Call $row.GetValue(2);
+        /// $buffer[3] = .Call $row.GetValue(3);
+        /// $buffer[4] = .Call $row.GetValue(4);
+        /// $buffer[5] = .Call $row.GetValue(5);
+        /// .Call($table.Rows).Add($buffer)
+        /// </code>
         /// 
-        /// </summary>
-        private static MethodInfo GetMethod(Type type, string name)
+        /// Has better performance than populating the buffer in a loop.
+        /// </remarks>
+        private static BlockExpression CreateBodyExpression(ParameterExpression[] args)
         {
-            return type.GetMethod(name);
+            return Expression.Block(TRow.Metadata.Columns.Select(c => Expression.Constant(c.Ordinal)).Select(o => Expression.Assign(Expression.ArrayAccess(args[2], o), Expression.Call(args[1], TRow.Type.GetMethod(nameof(ITableValued.GetValue)).MakeGenericMethod(typeof(object)), o))).Append<Expression>(Expression.Call(Expression.Property(args[0], nameof(DataTable.Rows)), typeof(DataRowCollection).GetMethod(nameof(DataRowCollection.Add), new[] { typeof(object[]) }), args[2])));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private static MethodInfo GetIsDBNull()
+        private static Action<DataTable, TRow, object[]> Factory()
         {
-            return GetMethod(TRow.Type, nameof(ITableValued.IsDBNull));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private static MethodInfo GetGetValue(Type typeArgument)
-        {
-            return GetMethod(TRow.Type, nameof(ITableValued.GetValue)).MakeGenericMethod(typeArgument);
-        }
-
-        private static Func<TRow, DataRow, DataRow> Create()
-        {
-            Expression[] expressions = new
-            Expression
-            [TRow.Metadata.Columns.Length + 1];
-
-            ParameterExpression[] _args = new
+            ParameterExpression[] args = new
             ParameterExpression[]
             {
-                Expression.Parameter(TRow.Type), Expression.Parameter(typeof(DataRow))
+                Expression.Parameter(typeof(DataTable), "table"), Expression.Parameter(TRow.Type, "row"), Expression.Parameter(typeof(object[]), "buffer")
             };
 
-            expressions[TRow.Metadata.Columns.Length] = _args[1]; // Returns the DataRow argument.
-
-            foreach (IColumnInternalMetadata metadata in TRow.Metadata.Columns)
-            {
-                ConstantExpression ordinal = Expression.Constant(metadata.Ordinal);
-
-                MethodCallExpression isDBNull = Expression.Call(instance: _args[0], arguments: ordinal, method: GetIsDBNull());
-                MethodCallExpression getValue = Expression.Call(instance: _args[0], arguments: ordinal, method: GetGetValue(metadata.Type));
-                MethodCallExpression setField = Expression.Call(
-                    _setField.MakeGenericMethod(metadata.Type), _args[1], ordinal, getValue);
-
-                expressions[metadata.Ordinal] = Expression.IfThen(Expression.IsFalse(isDBNull), setField);
-            }
-
-            Expression<Func<TRow, DataRow, DataRow>> lambda = Expression.Lambda
-                      <Func<TRow, DataRow, DataRow>>
-                      (Expression.Block(expressions), _args);
+            Expression<Action<DataTable, TRow, object[]>> lambda = Expression.Lambda
+                      <Action<DataTable, TRow, object[]>>
+                      (CreateBodyExpression(args), args);
 
             return lambda.Compile();
         }
 
         /// <summary>
-        /// Returns a lambda that populates the data row from the class properties.
+        /// Returns a lambda that adds a new row to the table, populating
+        /// it with values from the user object using the provided buffer.
         /// </summary>
-        public static Func<TRow, DataRow, DataRow> Get()
+        public static Action<DataTable, TRow, object[]> Get()
         {
             return _binder;
         }

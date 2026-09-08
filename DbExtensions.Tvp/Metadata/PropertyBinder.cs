@@ -39,36 +39,23 @@ namespace DbExtensions.Tvp.Metadata
         }
 
         /// <summary>
-        /// Compiles a lambda expression that 
-        /// returns the specified column value as object
+        /// Compiles two lambda getters for
+        /// the specified column: typed and
+        /// boxed.
         /// </summary>
         /// 
         /// <remarks>
-        /// Primarily used by Microsoft.Data.SqlClient for columns with unknown types.
+        /// <code>
+        /// $row.Property0 / (System.Object)$row.Property0
+        /// </code>
         /// </remarks>
-        private static Delegate CompileBoxedGetValueBinder(LambdaExpression getValue)
+        private static (Delegate Typed, Delegate Boxed) CompileGetValueBinder(ParameterExpression row, PropertyInfo property)
         {
-            Expression<Func<TRow, object>> lambda = Expression.Lambda
-                      <Func<TRow, object>>
-                      (Expression.Convert(getValue.Body, typeof(object)), getValue.Parameters);
+            LambdaExpression typedLambda = Expression.Lambda(Expression.Property(row, property), row);
+            LambdaExpression boxedLambda = Expression.Lambda
+                (Expression.Convert(typedLambda.Body, typeof(object)), typedLambda.Parameters);
 
-            return lambda.Compile();
-        }
-
-        /// <summary>
-        /// Compiles two lambda expressions for
-        /// the specified column: one typed and
-        /// one boxed.
-        /// </summary>
-        private static (Delegate Typed, Delegate Boxed) CompileGetValueBinder(ParameterExpression instance, PropertyInfo property)
-        {
-            LambdaExpression lambda = Expression.Lambda(MetadataProvider<TRow>.GetUnderlyingType(property, out Type type) && type.IsValueType ? 
-                Expression.Property(
-                Expression.Property(instance, property), nameof(Nullable<>.Value)) :
-                Expression.Property(instance, property),
-                instance);
-
-            return (lambda.Compile(), CompileBoxedGetValueBinder(lambda));
+            return (typedLambda.Compile(), boxedLambda.Compile());
         }
 
         /// <summary>
