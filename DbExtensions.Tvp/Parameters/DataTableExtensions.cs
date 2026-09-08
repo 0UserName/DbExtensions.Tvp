@@ -7,9 +7,9 @@ namespace DbExtensions.Tvp.Parameters
     internal static class DataTableExtensions
     {
         /// <remarks>
-        /// Keep the table columns initialization logic here; it is used by
-        /// different parameter type implementations that should not depend
-        /// on each other.
+        /// Keep the table column
+        /// initialization logic here, as it is shared by different parameter
+        /// type implementations that should remain independent of each other.
         /// </remarks>
         public static DataTable InitColumns<TRow>(this DataTable table) where TRow : ITableValued
         {
