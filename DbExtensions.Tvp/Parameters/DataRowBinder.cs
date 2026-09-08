@@ -14,20 +14,18 @@ namespace DbExtensions.Tvp.Parameters
 
         /// <remarks>
         /// <code>
-        /// $buffer[0] = .Call $row.GetValue(0);
-        /// $buffer[1] = .Call $row.GetValue(1);
-        /// $buffer[2] = .Call $row.GetValue(2);
-        /// $buffer[3] = .Call $row.GetValue(3);
-        /// $buffer[4] = .Call $row.GetValue(4);
-        /// $buffer[5] = .Call $row.GetValue(5);
+        /// $buffer[0] = (System.Object).Call $row.get_Property5();
+        /// $buffer[1] = (System.Object).Call $row.get_Property4();
+        /// $buffer[2] = (System.Object).Call $row.get_Property3();
+        /// $buffer[3] = (System.Object).Call $row.get_Property2();
+        /// $buffer[4] = (System.Object).Call $row.get_Property1();
+        /// $buffer[5] = (System.Object).Call $row.get_Property0();
         /// .Call($table.Rows).Add($buffer)
         /// </code>
-        /// 
-        /// Has better performance than populating the buffer in a loop.
         /// </remarks>
         private static BlockExpression CreateBodyExpression(ParameterExpression[] args)
         {
-            return Expression.Block(TRow.Metadata.Columns.Select(c => Expression.Constant(c.Ordinal)).Select(o => Expression.Assign(Expression.ArrayAccess(args[2], o), Expression.Call(args[1], TRow.Type.GetMethod(nameof(ITableValued.GetValue)).MakeGenericMethod(typeof(object)), o))).Append<Expression>(Expression.Call(Expression.Property(args[0], nameof(DataTable.Rows)), typeof(DataRowCollection).GetMethod(nameof(DataRowCollection.Add), new[] { typeof(object[]) }), args[2])));
+            return Expression.Block(TRow.Metadata.Columns.Select(c => new { Ordinal = Expression.Constant(c.Ordinal), Getter = TRow.Type.GetProperty(c.Name).GetMethod }).Select(c => Expression.Assign(Expression.ArrayAccess(args[2], c.Ordinal), Expression.Convert(Expression.Call(args[1], c.Getter), typeof(object)))).Append<Expression>(Expression.Call(Expression.Property(args[0], nameof(DataTable.Rows)), typeof(DataRowCollection).GetMethod(nameof(DataRowCollection.Add), new[] { typeof(object[]) }), args[2])));
         }
 
         private static Action<DataTable, TRow, object[]> Factory()
