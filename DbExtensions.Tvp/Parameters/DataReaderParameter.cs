@@ -39,13 +39,13 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override object this[string name]
         {
-            get => throw new NotImplementedException();
+            get => throw new NotSupportedException();
         }
 
         /// <inheritdoc/>
         public override int Depth
         {
-            get => throw new NotImplementedException();
+            get => throw new NotSupportedException();
         }
 
         /// <inheritdoc/>
@@ -57,13 +57,13 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override bool HasRows
         {
-            get => throw new NotImplementedException();
+            get => throw new NotSupportedException();
         }
 
         /// <inheritdoc/>
         public override bool IsClosed
         {
-            get => throw new NotImplementedException();
+            get => throw new NotSupportedException();
         }
 
         /// <inheritdoc/>
@@ -159,7 +159,7 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override IEnumerator GetEnumerator()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <inheritdoc/>
@@ -207,7 +207,7 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override int GetOrdinal(string name)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <inheritdoc/>
@@ -237,7 +237,7 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override int GetValues(object[] values)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <inheritdoc/>
@@ -249,7 +249,7 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override bool NextResult()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <inheritdoc/>
