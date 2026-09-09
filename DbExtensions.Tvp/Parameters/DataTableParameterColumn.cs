@@ -12,7 +12,7 @@ namespace DbExtensions.Tvp.Parameters
         /// </summary>
         private DataTableParameterColumn SetMaxLength(int maxLength)
         {
-            MaxLength = DataType == typeof(string) ? maxLength : MaxLength;
+            MaxLength = DataType == typeof(string) ? maxLength : -1;
 
             return this;
         }

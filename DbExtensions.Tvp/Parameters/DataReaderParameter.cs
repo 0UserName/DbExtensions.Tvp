@@ -20,27 +20,15 @@ namespace DbExtensions.Tvp.Parameters
     internal sealed class DataReaderParameter<TRow>(ObjectPool<DataReaderParameter<TRow>> pool) : DbDataReader, IParameter<TRow> where TRow : ITableValued
     {
         /// <remarks>
-        /// Intended for external libraries
-        /// that need to know the structure
-        /// of user data.
+        /// Used by external libraries
+        /// to access the structure of
+        /// user data.
         /// </remarks>
-        private static readonly DataTable _schema = new DataTableReader(new DataTable(TRow.Metadata.Name).InitColumns<TRow>()).GetSchemaTable();
+        private static readonly DataTable _schema = new DataTable(TRow.Metadata.Name).InitColumns<TRow>().CreateDataReader().GetSchemaTable();
 
         private int _count;
 
         private IEnumerator<TRow> _enumerator;
-
-        /// <inheritdoc/>
-        public override object this[int ordinal]
-        {
-            get => _enumerator.Current.GetValue<object>(ordinal);
-        }
-
-        /// <inheritdoc/>
-        public override object this[string name]
-        {
-            get => throw new NotSupportedException();
-        }
 
         /// <inheritdoc/>
         public override int Depth
@@ -72,6 +60,18 @@ namespace DbExtensions.Tvp.Parameters
             get => _count;
         }
 
+        /// <inheritdoc/>
+        public override object this[int ordinal]
+        {
+            get => _enumerator.Current.GetValue<object>(ordinal);
+        }
+
+        /// <inheritdoc/>
+        public override object this[string name]
+        {
+            get => throw new NotSupportedException();
+        }
+
         private static ReadOnlySpan<T> Cast<T>(object value) where T : struct
         {
             if (value is T[] array)
@@ -100,6 +100,12 @@ namespace DbExtensions.Tvp.Parameters
             }
 
             return copy;
+        }
+
+        /// <inheritdoc/>
+        public override void Close()
+        {
+            pool.Return(this);
         }
 
         /// <inheritdoc/>
@@ -225,7 +231,7 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override object GetValue(int ordinal)
         {
-            return this[ordinal];
+            return _enumerator.Current.GetFieldValue<object>(ordinal);
         }
 
         /// <inheritdoc/>
@@ -274,12 +280,6 @@ namespace DbExtensions.Tvp.Parameters
             _enumerator = default;
 
             return true;
-        }
-
-        /// <inheritdoc/>
-        public new void Dispose()
-        {
-            pool.Return(this);
         }
     }
 }
