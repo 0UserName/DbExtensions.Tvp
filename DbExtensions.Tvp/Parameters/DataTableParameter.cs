@@ -21,7 +21,7 @@ namespace DbExtensions.Tvp.Parameters
 
             foreach (TRow row in rows)
             {
-                DataRowBinder<TRow>.Get()(this, row, buffer);
+                Rows.Add(ArrayBinder<TRow>.Get()(row, buffer));
             }
         }
 
