@@ -36,7 +36,7 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public new void Dispose()
         {
-            _pool.Return(this);
+            _pool?.Return(this);
         }
 
         public DataTableParameter() : base(TRow.Metadata.Name)
