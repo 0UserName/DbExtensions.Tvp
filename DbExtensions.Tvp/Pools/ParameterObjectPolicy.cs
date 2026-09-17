@@ -9,7 +9,7 @@ namespace DbExtensions.Tvp.Pools
         /// <inheritdoc/>
         public TParameter Create()
         {
-            return (TParameter)Activator.CreateInstance(typeof(TParameter), ParameterPool<TParameter>.Shared);
+            return (TParameter)Activator.CreateInstance(typeof(TParameter), ParameterPool<TParameter>.Shared.Value);
         }
 
         /// <inheritdoc/>

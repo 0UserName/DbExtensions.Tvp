@@ -16,7 +16,7 @@ namespace DbExtensions.Tvp.Parameters
         /// </summary>
         public static IDisposable Build<TRow>(this IEnumerable<TRow> rows, bool useDataReader = true) where TRow : ITableValued
         {
-            IParameter<TRow> parameter = useDataReader ? ParameterPool<DataReaderParameter<TRow>>.Shared.Get() : ParameterPool<DataTableParameter<TRow>>.Shared.Get();
+            IParameter<TRow> parameter = useDataReader ? ParameterPool<DataReaderParameter<TRow>>.Shared.Value.Get() : ParameterPool<DataTableParameter<TRow>>.Shared.Value.Get();
 
             try
             {
