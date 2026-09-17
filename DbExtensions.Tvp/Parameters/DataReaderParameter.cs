@@ -63,7 +63,7 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override object this[int ordinal]
         {
-            get => _enumerator.Current.GetValue<object>(ordinal);
+            get => _enumerator.Current.GetFieldValue<object>(ordinal);
         }
 
         /// <inheritdoc/>
@@ -111,13 +111,13 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override bool GetBoolean(int ordinal)
         {
-            return _enumerator.Current.GetValue<bool>(ordinal);
+            return _enumerator.Current.GetFieldValue<bool>(ordinal);
         }
 
         /// <inheritdoc/>
         public override byte GetByte(int ordinal)
         {
-            return _enumerator.Current.GetValue<byte>(ordinal);
+            return _enumerator.Current.GetFieldValue<byte>(ordinal);
         }
 
         /// <inheritdoc/>
@@ -129,7 +129,7 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override char GetChar(int ordinal)
         {
-            return _enumerator.Current.GetValue<char>(ordinal);
+            return _enumerator.Current.GetFieldValue<char>(ordinal);
         }
 
         /// <inheritdoc/>
@@ -147,19 +147,19 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override DateTime GetDateTime(int ordinal)
         {
-            return _enumerator.Current.GetValue<DateTime>(ordinal);
+            return _enumerator.Current.GetFieldValue<DateTime>(ordinal);
         }
 
         /// <inheritdoc/>
         public override decimal GetDecimal(int ordinal)
         {
-            return _enumerator.Current.GetValue<decimal>(ordinal);
+            return _enumerator.Current.GetFieldValue<decimal>(ordinal);
         }
 
         /// <inheritdoc/>
         public override double GetDouble(int ordinal)
         {
-            return _enumerator.Current.GetValue<double>(ordinal);
+            return _enumerator.Current.GetFieldValue<double>(ordinal);
         }
 
         /// <inheritdoc/>
@@ -177,31 +177,31 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override float GetFloat(int ordinal)
         {
-            return _enumerator.Current.GetValue<float>(ordinal);
+            return _enumerator.Current.GetFieldValue<float>(ordinal);
         }
 
         /// <inheritdoc/>
         public override Guid GetGuid(int ordinal)
         {
-            return _enumerator.Current.GetValue<Guid>(ordinal);
+            return _enumerator.Current.GetFieldValue<Guid>(ordinal);
         }
 
         /// <inheritdoc/>
         public override short GetInt16(int ordinal)
         {
-            return _enumerator.Current.GetValue<short>(ordinal);
+            return _enumerator.Current.GetFieldValue<short>(ordinal);
         }
 
         /// <inheritdoc/>
         public override int GetInt32(int ordinal)
         {
-            return _enumerator.Current.GetValue<int>(ordinal);
+            return _enumerator.Current.GetFieldValue<int>(ordinal);
         }
 
         /// <inheritdoc/>
         public override long GetInt64(int ordinal)
         {
-            return _enumerator.Current.GetValue<long>(ordinal);
+            return _enumerator.Current.GetFieldValue<long>(ordinal);
         }
 
         /// <inheritdoc/>
@@ -225,7 +225,7 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override string GetString(int ordinal)
         {
-            return _enumerator.Current.GetValue<string>(ordinal);
+            return _enumerator.Current.GetFieldValue<string>(ordinal);
         }
 
         /// <inheritdoc/>
@@ -237,7 +237,7 @@ namespace DbExtensions.Tvp.Parameters
         /// <inheritdoc/>
         public override T GetFieldValue<T>(int ordinal)
         {
-            return _enumerator.Current.GetValue<T>(ordinal);
+            return _enumerator.Current.GetFieldValue<T>(ordinal);
         }
 
         /// <inheritdoc/>

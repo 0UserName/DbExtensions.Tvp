@@ -1,11 +1,11 @@
-﻿using DbExtensions.Tvp.Metadata.Contracts;
+﻿using DbExtensions.Tvp.Binders;
 
 using System;
 using System.Data;
 
 using System.Runtime.CompilerServices;
 
-namespace DbExtensions.Tvp.Metadata.Abstracts
+namespace DbExtensions.Tvp.Metadata.Contracts.Abstracts
 {
     public abstract class AbstractTableValued<TRow> : ITableValued where TRow : class, ITableValued
     {
@@ -23,15 +23,21 @@ namespace DbExtensions.Tvp.Metadata.Abstracts
         }
 
         /// <inheritdoc/>
-        public bool IsDBNull(int ordinal)
+        public T GetFieldValue<T>(int ordinal)
         {
-            return PropertyBinder<TRow>.GetIsDBNullBinder(ordinal)(Unsafe.As<TRow>(this)) && (TRow.Metadata.Columns[ordinal].AllowDBNull ? true : throw new ConstraintException($"Column with ordinal { ordinal } does not allow null"));
+            return PropertyBinder<TRow>.GetFieldValue<T>(Unsafe.As<TRow>(this), ordinal);
         }
 
         /// <inheritdoc/>
-        public T GetValue<T>(int ordinal)
+        public object[] GetValues(object[] values)
         {
-            return PropertyBinder<TRow>.GetValueBinder<T>(ordinal)(Unsafe.As<TRow>(this));
+            return ArrayBinder<TRow>.GetValues(Unsafe.As<TRow>(this), values);
+        }
+
+        /// <inheritdoc/>
+        public bool IsDBNull(int ordinal)
+        {
+            return PropertyBinder<TRow>.IsDBNull(Unsafe.As<TRow>(this), ordinal) && (TRow.Metadata.Columns[ordinal].AllowDBNull ? true : throw new ConstraintException($"Column with ordinal { ordinal } does not allow null"));
         }
 
         static AbstractTableValued()

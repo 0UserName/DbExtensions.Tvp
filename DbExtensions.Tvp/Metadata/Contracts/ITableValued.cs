@@ -15,15 +15,23 @@ namespace DbExtensions.Tvp.Metadata.Contracts
         }
 
         /// <summary>
-        /// Return whether the
-        /// specified field is
-        /// set to null.
+        /// Gets the value of the specified column as the requested type.
         /// </summary>
-        bool IsDBNull(int ordinal);
+        T GetFieldValue<T>(int ordinal);
 
         /// <summary>
-        /// Returns the value of the specified field.
+        /// Populates an array of objects
+        /// with the column values of the
+        /// current row.
         /// </summary>
-        T GetValue<T>(int ordinal);
+        object[] GetValues(object[] values);
+
+        /// <summary>
+        /// Gets a value that
+        /// indicates whether
+        /// the column is set
+        /// to null.
+        /// </summary>
+        bool IsDBNull(int ordinal);
     }
 }
