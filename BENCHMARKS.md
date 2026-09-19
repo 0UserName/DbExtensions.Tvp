@@ -1,5 +1,7 @@
 # Environment
 
+
+
 ```
 BenchmarkDotNet v0.15.8, Windows 11 (10.0.22631.3007/23H2/2023Update/SunValley3)
 AMD Ryzen 7 3700X 3.60GHz, 1 CPU, 16 logical and 8 physical cores
@@ -24,7 +26,7 @@ IterationCount=20  LaunchCount=5  WarmupCount=10
 
 <div align="justify">
 
-At the moment, the measurements have only been performed for the process of creating and populating `DataTableParameter<TRow>` compared to `DataTable`.
+At the moment, measurements have only been performed for the creation (without concurrency) and population of `DataTableParameter<TRow>` and `DataTable`. The sample parameters have the following structure: `int`, `string`, `double`, and `DateTime`.
 
 </div>
 
