@@ -3,7 +3,7 @@ using DbExtensions.Tvp.Metadata.Contracts.Abstracts;
 
 namespace DbExtensions.Tvp.Tests.Rows.Abstracts
 {
-    internal abstract class AbstractMetadataTableValued<TRow> : AbstractTableValued<TRow> where TRow : class, ITableValued
+    public abstract class AbstractMetadataTableValued<TRow> : AbstractTableValued<TRow> where TRow : class, ITableValued
     {
         public int? Property0
         {

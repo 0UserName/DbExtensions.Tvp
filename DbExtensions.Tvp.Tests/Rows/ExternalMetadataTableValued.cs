@@ -4,8 +4,8 @@ using DbExtensions.Tvp.Tests.Rows.Abstracts;
 
 namespace DbExtensions.Tvp.Tests.Rows
 {
-    [TableMetadata(nameof(ExternalMetadataTableValued))]
-    internal sealed class ExternalMetadataTableValued : AbstractMetadataTableValued<ExternalMetadataTableValued>
+    [TableMetadata("dbo.ExternalMetadataTableValued")]
+    public sealed class ExternalMetadataTableValued : AbstractMetadataTableValued<ExternalMetadataTableValued>
     {
         public string Property4
         {

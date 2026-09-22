@@ -4,7 +4,7 @@ using DbExtensions.Tvp.Tests.Rows.Abstracts;
 
 namespace DbExtensions.Tvp.Tests.Rows
 {
-    [TableMetadata(nameof(InternalMetadataTableValued))]
-    internal sealed class InternalMetadataTableValued : AbstractMetadataTableValued<InternalMetadataTableValued>
+    [TableMetadata("dbo.InternalMetadataTableValued")]
+    public sealed class InternalMetadataTableValued : AbstractMetadataTableValued<InternalMetadataTableValued>
     { }
 }
