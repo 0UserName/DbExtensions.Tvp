@@ -2,7 +2,6 @@
 using DbExtensions.Tvp.Metadata.Contracts;
 
 using DbExtensions.Tvp.Parameters;
-
 using DbExtensions.Tvp.Tests.Rows;
 
 using NUnit.Framework.Constraints;
@@ -12,7 +11,11 @@ using System.Collections.Generic;
 
 using System.Data.Common;
 
-namespace DbExtensions.Tvp.Tests.Abstracts
+using System.Reflection;
+
+using System.Threading.Tasks;
+
+namespace DbExtensions.Tvp.Tests.Contracts.Abstracts
 {
     public abstract class AbstractTests
     {
@@ -20,20 +23,20 @@ namespace DbExtensions.Tvp.Tests.Abstracts
         /// Apply a constraint
         /// to an actual value.
         /// </summary>
-        protected static void That<TConstraintType, TRow, TParameter>(Func<IEnumerable<TRow>, TParameter, TConstraintType> actualFactory, IResolveConstraint expression) where TRow : ITableValued
+        protected static async Task ThatAsync<TConstraintType, TRow, TParameter>(Func<IEnumerable<TRow>, TParameter, Task<TConstraintType>> actualFactory, IResolveConstraint expression) where TRow : ITableValued
         {
             IEnumerable<TRow> rows = RowsFactory.Create<TRow>();
 
             using (IDisposable parameter = rows.Build(typeof(TParameter).IsAssignableTo(typeof(DbDataReader))))
             {
-                Assert.That(actualFactory(rows, (TParameter)parameter), expression);
+                Assert.That(await actualFactory(rows, (TParameter)parameter), expression);
             }
         }
 
         [OneTimeSetUp]
-        protected void SetUp()
+        protected void SetupMetadata()
         {
-            MetadataStorage.AddColumns(nameof(ExternalMetadataTableValued), new IColumnExternalMetadata[]
+            MetadataStorage.AddColumns(typeof(ExternalMetadataTableValued).GetCustomAttribute<TableMetadataAttribute>().Name, new IColumnExternalMetadata[]
             {
                 new ColumnExternalMetadata(default, true , nameof(ExternalMetadataTableValued.Property0), typeof(int)   , 5, -1, false),
                 new ColumnExternalMetadata(default, true , nameof(ExternalMetadataTableValued.Property1), typeof(int)   , 4, -1, false),

@@ -1,6 +1,6 @@
 ﻿using DbExtensions.Tvp.Metadata.Contracts;
 
-using DbExtensions.Tvp.Tests.Abstracts;
+using DbExtensions.Tvp.Tests.Contracts.Abstracts;
 
 using DbExtensions.Tvp.Tests.Rows;
 
@@ -17,14 +17,14 @@ namespace DbExtensions.Tvp.Tests
         [TestCase(nameof(ExternalMetadataTableValued.Property7), TestName = $"DbDataReader: { nameof(ExternalMetadataTableValued.Property7) } is ignored", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
         public void TestDataReaderTrimColumn<TRow>(string column) where TRow : ITableValued
         {
-            That<bool, TRow, DbDataReader>((_, p) => p.GetSchemaTable().AsEnumerable().Any(r => r.Field<string>(SchemaTableColumn.ColumnName) == column), Is.False);
+            ThatAsync<bool, TRow, DbDataReader>(async (_, parameter) => parameter.GetSchemaTable().AsEnumerable().Any(r => r.Field<string>(SchemaTableColumn.ColumnName) == column), Is.False).Wait();
         }
 
         [TestCase(nameof(ExternalMetadataTableValued.Property6), TestName = $"DataTable: { nameof(ExternalMetadataTableValued.Property6) } is ignored", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
         [TestCase(nameof(ExternalMetadataTableValued.Property7), TestName = $"DataTable: { nameof(ExternalMetadataTableValued.Property7) } is ignored", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
         public void TestDataTableTrimColumn<TRow>(string column) where TRow : ITableValued
         {
-            That<bool, TRow, DataTable>((_, p) => p.Columns.Contains(column), Is.False);
+            ThatAsync<bool, TRow, DataTable>(async (_, parameter) => parameter.Columns.Contains(column), Is.False).Wait();
         }
     }
 }

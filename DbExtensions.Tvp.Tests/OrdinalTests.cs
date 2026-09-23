@@ -1,6 +1,6 @@
 ﻿using DbExtensions.Tvp.Metadata.Contracts;
 
-using DbExtensions.Tvp.Tests.Abstracts;
+using DbExtensions.Tvp.Tests.Contracts.Abstracts;
 
 using DbExtensions.Tvp.Tests.Rows;
 
@@ -25,7 +25,7 @@ namespace DbExtensions.Tvp.Tests
         [TestCase(5, nameof(ExternalMetadataTableValued.Property0), TestName = $"DbDataReader: { nameof(ExternalMetadataTableValued.Property0) } is defined in the external metadata at ordinal [5]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
         public void TestDataReaderOrdinal<TRow>(int ordinal, string column) where TRow : ITableValued
         {
-            That<string, TRow, DbDataReader>((_, p) => p.GetSchemaTable().AsEnumerable().First(r => r.Field<int>(SchemaTableColumn.ColumnOrdinal) == ordinal).Field<string>(SchemaTableColumn.ColumnName), Is.EqualTo(column));
+            ThatAsync<string, TRow, DbDataReader>(async (_, parameter) => parameter.GetSchemaTable().AsEnumerable().First(r => r.Field<int>(SchemaTableColumn.ColumnOrdinal) == ordinal).Field<string>(SchemaTableColumn.ColumnName), Is.EqualTo(column)).Wait();
         }
 
         [TestCase(0, nameof(InternalMetadataTableValued.Property0), TestName = $"DataTable: { nameof(InternalMetadataTableValued.Property0) } is defined in the class layout at ordinal [0]", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
@@ -40,7 +40,7 @@ namespace DbExtensions.Tvp.Tests
         [TestCase(5, nameof(ExternalMetadataTableValued.Property0), TestName = $"DataTable: { nameof(ExternalMetadataTableValued.Property0) } is defined in the external metadata at ordinal [5]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
         public void TestDataTableOrdinal<TRow>(int ordinal, string column) where TRow : ITableValued
         {
-            That<string, TRow, DataTable>((_, p) => p.Columns[ordinal].ColumnName, Is.EqualTo(column));
+            ThatAsync<string, TRow, DataTable>(async (_, parameter) => parameter.Columns[ordinal].ColumnName, Is.EqualTo(column)).Wait();
         }
     }
 }

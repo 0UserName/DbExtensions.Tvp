@@ -9,13 +9,11 @@ namespace DbExtensions.Tvp.Tests.Rows
     internal static class RowsFactory
     {
         /// <summary>
-        /// Creates instances of TRow by reading a file
-        /// whose name matches the table name specified
-        /// in the attribute.
+        /// Creates TRow instances by reading a file whose name matches the class name.
         /// </summary>
         public static TRow[] Create<TRow>() where TRow : ITableValued
         {
-            return JsonSerializer.Deserialize<TRow[]>(File.ReadAllBytes(Path.Combine("Data", TRow.Metadata.Name + ".json")));
+            return JsonSerializer.Deserialize<TRow[]>(File.ReadAllBytes(Path.Combine("Data", TRow.Type.Name + ".json")));
         }
     }
 }
