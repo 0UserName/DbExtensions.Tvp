@@ -1,7 +1,7 @@
 ﻿using DbExtensions.Tvp.Metadata.Contracts;
 using DbExtensions.Tvp.Metadata.Contracts.Abstracts;
 
-namespace DbExtensions.Tvp.Tests.Rows.Abstracts
+namespace DbExtensions.Tvp.Tests.Rows.Contracts.Abstracts
 {
     public abstract class AbstractMetadataTableValued<TRow> : AbstractTableValued<TRow> where TRow : class, ITableValued
     {

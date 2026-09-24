@@ -2,9 +2,8 @@
 using DbExtensions.Tvp.Metadata.Contracts;
 
 using DbExtensions.Tvp.Parameters;
-using DbExtensions.Tvp.Tests.Rows;
 
-using NUnit.Framework.Constraints;
+using DbExtensions.Tvp.Tests.Rows;
 
 using System;
 using System.Collections.Generic;
@@ -15,26 +14,26 @@ using System.Reflection;
 
 using System.Threading.Tasks;
 
-namespace DbExtensions.Tvp.Tests.Contracts.Abstracts
+namespace DbExtensions.Tvp.Tests
 {
-    public abstract class AbstractTests
+    public static class AssertionContext
     {
         /// <summary>
-        /// Apply a constraint
-        /// to an actual value.
+        /// Creates data rows, builds a parameter from
+        /// them, and executes the specified assertion
+        /// using both.
         /// </summary>
-        protected static async Task ThatAsync<TConstraintType, TRow, TParameter>(Func<IEnumerable<TRow>, TParameter, Task<TConstraintType>> actualFactory, IResolveConstraint expression) where TRow : ITableValued
+        public static async Task ExecuteAsync<TRow, TParameter>(Func<IEnumerable<TRow>, TParameter, Task> assertion) where TRow : ITableValued
         {
             IEnumerable<TRow> rows = RowsFactory.Create<TRow>();
 
             using (IDisposable parameter = rows.Build(typeof(TParameter).IsAssignableTo(typeof(DbDataReader))))
             {
-                Assert.That(await actualFactory(rows, (TParameter)parameter), expression);
+                await assertion(rows, (TParameter)parameter);
             }
         }
 
-        [OneTimeSetUp]
-        protected void SetupMetadata()
+        static AssertionContext()
         {
             MetadataStorage.AddColumns(typeof(ExternalMetadataTableValued).GetCustomAttribute<TableMetadataAttribute>().Name, new IColumnExternalMetadata[]
             {

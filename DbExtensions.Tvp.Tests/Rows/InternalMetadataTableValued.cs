@@ -1,6 +1,6 @@
 ﻿using DbExtensions.Tvp.Metadata;
 
-using DbExtensions.Tvp.Tests.Rows.Abstracts;
+using DbExtensions.Tvp.Tests.Rows.Contracts.Abstracts;
 
 namespace DbExtensions.Tvp.Tests.Rows
 {
