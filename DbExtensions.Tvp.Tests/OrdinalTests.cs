@@ -11,34 +11,26 @@ using System.Linq;
 
 namespace DbExtensions.Tvp.Tests
 {
-    public sealed class OrdinalTests : AbstractTests
+    [TestFixture(typeof(InternalMetadataTableValued), 0, nameof(InternalMetadataTableValued.Property0))]
+    [TestFixture(typeof(InternalMetadataTableValued), 1, nameof(InternalMetadataTableValued.Property1))]
+    [TestFixture(typeof(InternalMetadataTableValued), 2, nameof(InternalMetadataTableValued.Property2))]
+    [TestFixture(typeof(InternalMetadataTableValued), 3, nameof(InternalMetadataTableValued.Property3))]
+    [TestFixture(typeof(ExternalMetadataTableValued), 0, nameof(ExternalMetadataTableValued.Property5))]
+    [TestFixture(typeof(ExternalMetadataTableValued), 1, nameof(ExternalMetadataTableValued.Property4))]
+    [TestFixture(typeof(ExternalMetadataTableValued), 2, nameof(ExternalMetadataTableValued.Property3))]
+    [TestFixture(typeof(ExternalMetadataTableValued), 3, nameof(ExternalMetadataTableValued.Property2))]
+    [TestFixture(typeof(ExternalMetadataTableValued), 4, nameof(ExternalMetadataTableValued.Property1))]
+    [TestFixture(typeof(ExternalMetadataTableValued), 5, nameof(ExternalMetadataTableValued.Property0))]
+    public sealed class OrdinalTests<TRow>(int ordinal, string column) : AbstractTests where TRow : ITableValued
     {
-        [TestCase(0, nameof(InternalMetadataTableValued.Property0), TestName = $"DbDataReader: { nameof(InternalMetadataTableValued.Property0) } is defined in the class layout at ordinal [0]", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
-        [TestCase(1, nameof(InternalMetadataTableValued.Property1), TestName = $"DbDataReader: { nameof(InternalMetadataTableValued.Property1) } is defined in the class layout at ordinal [1]", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
-        [TestCase(2, nameof(InternalMetadataTableValued.Property2), TestName = $"DbDataReader: { nameof(InternalMetadataTableValued.Property2) } is defined in the class layout at ordinal [2]", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
-        [TestCase(3, nameof(InternalMetadataTableValued.Property3), TestName = $"DbDataReader: { nameof(InternalMetadataTableValued.Property3) } is defined in the class layout at ordinal [3]", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
-        [TestCase(0, nameof(ExternalMetadataTableValued.Property5), TestName = $"DbDataReader: { nameof(ExternalMetadataTableValued.Property5) } is defined in the external metadata at ordinal [0]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        [TestCase(1, nameof(ExternalMetadataTableValued.Property4), TestName = $"DbDataReader: { nameof(ExternalMetadataTableValued.Property4) } is defined in the external metadata at ordinal [1]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        [TestCase(2, nameof(ExternalMetadataTableValued.Property3), TestName = $"DbDataReader: { nameof(ExternalMetadataTableValued.Property3) } is defined in the external metadata at ordinal [2]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        [TestCase(3, nameof(ExternalMetadataTableValued.Property2), TestName = $"DbDataReader: { nameof(ExternalMetadataTableValued.Property2) } is defined in the external metadata at ordinal [3]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        [TestCase(4, nameof(ExternalMetadataTableValued.Property1), TestName = $"DbDataReader: { nameof(ExternalMetadataTableValued.Property1) } is defined in the external metadata at ordinal [4]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        [TestCase(5, nameof(ExternalMetadataTableValued.Property0), TestName = $"DbDataReader: { nameof(ExternalMetadataTableValued.Property0) } is defined in the external metadata at ordinal [5]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        public void TestDataReaderOrdinal<TRow>(int ordinal, string column) where TRow : ITableValued
+        [Test]
+        public void TestDataReader()
         {
             ThatAsync<string, TRow, DbDataReader>(async (_, parameter) => parameter.GetSchemaTable().AsEnumerable().First(r => r.Field<int>(SchemaTableColumn.ColumnOrdinal) == ordinal).Field<string>(SchemaTableColumn.ColumnName), Is.EqualTo(column)).Wait();
         }
 
-        [TestCase(0, nameof(InternalMetadataTableValued.Property0), TestName = $"DataTable: { nameof(InternalMetadataTableValued.Property0) } is defined in the class layout at ordinal [0]", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
-        [TestCase(1, nameof(InternalMetadataTableValued.Property1), TestName = $"DataTable: { nameof(InternalMetadataTableValued.Property1) } is defined in the class layout at ordinal [1]", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
-        [TestCase(2, nameof(InternalMetadataTableValued.Property2), TestName = $"DataTable: { nameof(InternalMetadataTableValued.Property2) } is defined in the class layout at ordinal [2]", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
-        [TestCase(3, nameof(InternalMetadataTableValued.Property3), TestName = $"DataTable: { nameof(InternalMetadataTableValued.Property3) } is defined in the class layout at ordinal [3]", TypeArgs = new[] { typeof(InternalMetadataTableValued) })]
-        [TestCase(0, nameof(ExternalMetadataTableValued.Property5), TestName = $"DataTable: { nameof(ExternalMetadataTableValued.Property5) } is defined in the external metadata at ordinal [0]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        [TestCase(1, nameof(ExternalMetadataTableValued.Property4), TestName = $"DataTable: { nameof(ExternalMetadataTableValued.Property4) } is defined in thr external metadata at ordinal [1]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        [TestCase(2, nameof(ExternalMetadataTableValued.Property3), TestName = $"DataTable: { nameof(ExternalMetadataTableValued.Property3) } is defined in the external metadata at ordinal [2]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        [TestCase(3, nameof(ExternalMetadataTableValued.Property2), TestName = $"DataTable: { nameof(ExternalMetadataTableValued.Property2) } is defined in the external metadata at ordinal [3]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        [TestCase(4, nameof(ExternalMetadataTableValued.Property1), TestName = $"DataTable: { nameof(ExternalMetadataTableValued.Property1) } is defined in the external metadata at ordinal [4]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        [TestCase(5, nameof(ExternalMetadataTableValued.Property0), TestName = $"DataTable: { nameof(ExternalMetadataTableValued.Property0) } is defined in the external metadata at ordinal [5]", TypeArgs = new[] { typeof(ExternalMetadataTableValued) })]
-        public void TestDataTableOrdinal<TRow>(int ordinal, string column) where TRow : ITableValued
+        [Test]
+        public void TestDataTable()
         {
             ThatAsync<string, TRow, DataTable>(async (_, parameter) => parameter.Columns[ordinal].ColumnName, Is.EqualTo(column)).Wait();
         }
