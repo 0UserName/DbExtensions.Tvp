@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Tests/">
     <Project Path="DbExtensions.Tvp.Tests/DbExtensions.Tvp.Tests.csproj" />
+    <Project Path="DbExtensions.Tvp.Tests.Integrations/DbExtensions.Tvp.Tests.Integrations.csproj" />
   </Folder>
   <Project Path="DbExtensions.Tvp/DbExtensions.Tvp.csproj" />
 </Solution>

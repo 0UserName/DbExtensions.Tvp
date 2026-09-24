@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+	<!-- Integration of SQL Server Docker containers with test environment (Visual Studio, dotnet CLI) -->
+	<PackageReference Include="Testcontainers.Ado.SqlServer" Version="0.1.0" />
+	<!-- Integration of SQL Server Docker containers with test environment (Visual Studio, dotnet CLI) -->
+
+	<!-- NUnit wrapper for Testcontainers.Ado -->
+	<PackageReference Include="Testcontainers.Ado.NUnit" Version="0.1.0" />
+	<!-- NUnit wrapper for Testcontainers.Ado -->
+  </ItemGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\DbExtensions.Tvp.Tests\DbExtensions.Tvp.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Update="Init\**">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+  </ItemGroup>
+
+</Project>
