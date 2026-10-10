@@ -8,7 +8,7 @@ namespace DbExtensions.Tvp.Metadata
     internal static class MetadataProvider<TRow> where TRow : ITableValued
     {
         /// <summary>
-        /// Returns a custom 
+        /// Returns a custom
         /// attribute from a
         /// type member.
         /// </summary>
